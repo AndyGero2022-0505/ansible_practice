@@ -1,0 +1,48 @@
+---
+- name: Configuración inicial de los servidores
+  hosts: servers
+  become: yes
+
+  tasks:
+    - name: Actualizar caché de apt
+      apt:
+        update_cache: yes
+
+    - name: Instalar Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Instalar cowsay
+      apt:
+        name: cowsay
+        state: present
+
+    - name: Crear un archivo de prueba
+      copy:
+        dest: /home/vagrant/test.txt
+        content: "Este es un archivo de prueba"
+
+    - name: Copiar un archivo desde el controlador
+      copy:
+        src: /ruta/local/del/archivo
+        dest: /home/vagrant/archivo_copiado.txt
+
+    - name: Crear una carpeta
+      file:
+        path: /home/vagrant/mi_carpeta
+        state: directory
+
+    - name: Iniciar servicio Apache
+      service:
+        name: apache2
+        state: started
+
+    - name: Agregar un usuario
+      user:
+        name: nuevo_usuario
+        state: present
+        shell: /bin/bash
+
+    - name: Ejecutar un script en el servidor
+      command: /ruta/al/script.sh
